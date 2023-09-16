@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mouse Trailer</title>
+  </head>
+  <body>
+    <style>
+      body {
+        background-color: rgb(10, 10, 10);
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+      }
+      .image {
+        width: 50vmin;
+        position: absolute;
+        transform: translate(-50%, -50%);
+      }
+      .image[data-status="inactive"] {
+        display: none;
+      }
+      .image[data-status="active"] {
+        display: block;
+      }
+    </style>
+
+    <img
+      src="images/img1.jpg"
+      class="image"
+      data-index="1"
+      data-status="inactive"
+      draggable="false" />
+    <img
+      src="images/img2.jpg"
+      class="image"
+      data-index="2"
+      data-status="inactive"
+      draggable="false" />
+    <img
+      src="images/img3.jpg"
+      class="image"
+      data-index="3"
+      data-status="inactive"
+      draggable="false" />
+    <img
+      src="images/img4.jpg"
+      class="image"
+      data-index="4"
+      data-status="inactive"
+      draggable="false" />
+    <img
+      src="images/img5.jpg"
+      class="image"
+      data-index="5"
+      data-status="inactive"
+      draggable="false" />
+    <img
+      src="images/img6.jpg"
+      class="image"
+      data-index="6"
+      data-status="inactive"
+      draggable="false" />
+    <img
+      src="images/img7.jpg"
+      class="image"
+      data-index="7"
+      data-status="inactive"
+      draggable="false" />
+    <img
+      src="images/img8.jpg"
+      class="image"
+      data-index="8"
+      data-status="inactive"
+      draggable="false" />
+    <img
+      src="images/img9.jpg"
+      class="image"
+      data-index="9"
+      data-status="inactive"
+      draggable="false" />
+    <img
+      src="images/img10.jpg"
+      class="image"
+      data-index="10"
+      data-status="inactive"
+      draggable="false" />
+
+    <!-- Scrips -->
+    <script>
+      const images = document.getElementsByClassName("image");
+
+      let globalIndex = 0,
+        last = { x: 0, y: 0 };
+
+      const activate = (image, x, y) => {
+        image.style.left = `${x}px`;
+        image.style.top = `${y}px`;
+        image.style.zIndex = globalIndex;
+
+        image.dataset.status = "active";
+
+        last = { x, y };
+      };
+
+      const distanceFromLast = (x, y) => {
+        return Math.hypot(x - last.x, y - last.y);
+      };
+
+      const handleOnMove = e => {
+        if (distanceFromLast(e.clientX, e.clientY) > window.innerWidth / 20) {
+          const lead = images[globalIndex % images.length],
+            tail = images[(globalIndex - 5) % images.length];
+
+          activate(lead, e.clientX, e.clientY);
+
+          if (tail) tail.dataset.status = "inactive";
+
+          globalIndex++;
+        }
+      };
+
+      window.onmousemove = e => handleOnMove(e);
+
+      window.ontouchmove = e => handleOnMove(e.touches[0]);
+    </script>
+  </body>
+</html>
